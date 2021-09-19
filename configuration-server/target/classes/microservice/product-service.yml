@@ -1,0 +1,18 @@
+server:
+  port: 1111
+
+spring:
+  application:
+    name: product-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/microservice?createDatabaseIfNotExist=true
+    username: root
+    password: MysqlPassword.
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto:create
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}-${server.port}:${random.uuid}

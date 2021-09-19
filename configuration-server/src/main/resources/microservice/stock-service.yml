@@ -1,0 +1,14 @@
+server:
+  port: 2111
+
+spring:
+  application:
+    name: stock-service
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: microservice
+eureka:
+  instance:
+    instance-id: ${spring.application.name}-${server.port}:${random.uuid}
