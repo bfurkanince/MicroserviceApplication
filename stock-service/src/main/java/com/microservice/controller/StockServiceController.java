@@ -3,7 +3,7 @@ package com.microservice.controller;
 import com.microservice.dto.StockDto;
 import com.microservice.model.StockModel;
 import com.microservice.repository.StockRepository;
-import com.microservice.util.StockServiceUtil;
+import com.microservice.util.CommonServiceUtil;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,12 +21,12 @@ public class StockServiceController {
 
     private static final Logger LOG = LoggerFactory.getLogger(StockServiceController.class);
 
-    private StockRepository stockRepository;
-    private StockServiceUtil stockServiceUtil;
+    private final StockRepository stockRepository;
+    private final CommonServiceUtil commonServiceUtil;
 
     @GetMapping("/create")
     public ResponseEntity createStock(@RequestBody StockDto stockDto) {
-        StockModel stockModel = stockServiceUtil.convertToEntity(stockDto);
+        StockModel stockModel = (StockModel)commonServiceUtil.convertToEntity(stockDto);
         stockRepository.save(stockModel);
         return new ResponseEntity<>(stockModel, HttpStatus.OK);
     }
@@ -34,7 +34,7 @@ public class StockServiceController {
     @GetMapping("/getAll")
     public ResponseEntity<List<StockDto>> getAllStock() {
         List<StockModel> stockModelList = stockRepository.findAll();
-        List<StockDto> stockDtoList = stockServiceUtil.convertToDto(stockModelList);
+        List<StockDto> stockDtoList = (List<StockDto>) commonServiceUtil.convertToDto(stockModelList);
         return new ResponseEntity<>(stockDtoList, HttpStatus.OK);
     }
 
@@ -42,7 +42,7 @@ public class StockServiceController {
     public ResponseEntity<Optional<StockDto>> getStockById(@PathVariable String ean) {
         Optional<StockModel> stock = stockRepository.findByEan(ean);
         if (stock.isPresent()) {
-            StockDto stockDto = stockServiceUtil.convertToDto(stock.get());
+            StockDto stockDto = (StockDto)commonServiceUtil.convertToDto(stock.get());
             return new ResponseEntity(stockDto, HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);

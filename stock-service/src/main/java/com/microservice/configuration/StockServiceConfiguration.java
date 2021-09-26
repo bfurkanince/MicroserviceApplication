@@ -7,8 +7,4 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class StockServiceConfiguration {
 
-    @Bean
-    public ModelMapper modelMapper(){
-        return new ModelMapper();
-    }
 }

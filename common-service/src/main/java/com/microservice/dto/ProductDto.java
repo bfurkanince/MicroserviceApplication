@@ -13,3 +13,4 @@ public class ProductDto extends BaseDto {
     private String manufacturerName;
     private Double basePrice;
 }
+

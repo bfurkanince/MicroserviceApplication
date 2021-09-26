@@ -8,7 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StockDto extends BaseDto{
-    private Long id;
     private String ean;
     private int amount;
 }

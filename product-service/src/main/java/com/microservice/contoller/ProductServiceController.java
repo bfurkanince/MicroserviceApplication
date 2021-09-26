@@ -3,7 +3,7 @@ package com.microservice.contoller;
 import com.microservice.dto.ProductDto;
 import com.microservice.model.ProductModel;
 import com.microservice.repository.ProductRepository;
-import com.microservice.util.ProductServiceUtil;
+import com.microservice.util.CommonServiceUtil;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,12 +21,12 @@ public class ProductServiceController {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProductServiceController.class);
 
-    private ProductRepository productRepository;
-    private ProductServiceUtil productServiceUtil;
+    private final ProductRepository productRepository;
+    private final CommonServiceUtil commonServiceUtil;
 
     @GetMapping("/create")
     public ResponseEntity createProducts(@RequestBody ProductDto productDto) {
-        ProductModel productModel = productServiceUtil.convertToEntity(productDto);
+        ProductModel productModel = (ProductModel) commonServiceUtil.convertToEntity(productDto);
         productRepository.save(productModel);
         return new ResponseEntity<>(productModel, HttpStatus.OK);
     }
@@ -34,7 +34,7 @@ public class ProductServiceController {
     @GetMapping("/getAll")
     public ResponseEntity<List<ProductDto>> getAllStock() {
         List<ProductModel> productModelList = productRepository.findAll();
-        List<ProductDto> productDtoList = productServiceUtil.convertToDto(productModelList);
+        List<ProductDto> productDtoList = (List<ProductDto>) commonServiceUtil.convertToDto(productModelList);
         return new ResponseEntity<>(productDtoList, HttpStatus.OK);
     }
 
@@ -42,7 +42,7 @@ public class ProductServiceController {
     public ResponseEntity<Optional<ProductDto>> getProductById(@PathVariable Long id) {
         Optional<ProductModel> productModel = productRepository.findById(id);
         if (productModel.isPresent()) {
-            ProductDto productDto = productServiceUtil.convertToDto(productModel.get());
+            ProductDto productDto = (ProductDto) commonServiceUtil.convertToDto(productModel.get());
             return new ResponseEntity(productDto, HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
