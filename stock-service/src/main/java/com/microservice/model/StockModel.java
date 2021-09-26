@@ -10,11 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "stock")
 @AllArgsConstructor
 @NoArgsConstructor
-public class StockModel {
-
-    @Id
-    private Long id;
+public class StockModel extends BaseModel{
     private String ean;
     private int amount;
-
 }

@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class ProductDto {
+public class ProductDto extends BaseDto {
     private String ean;
     private String name;
     private String manufacturerName;

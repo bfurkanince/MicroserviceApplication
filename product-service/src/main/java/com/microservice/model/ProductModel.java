@@ -11,12 +11,8 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Table(name = "product")
-public class ProductModel {
+public class ProductModel extends BaseModel{
 
-    @Id
-    @GeneratedValue
-    @Column(unique=true)
-    private long id;
     private String ean;
     private String name;
     private String manufacturerName;
