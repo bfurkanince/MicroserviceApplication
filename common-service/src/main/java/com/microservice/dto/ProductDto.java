@@ -12,5 +12,6 @@ public class ProductDto extends BaseDto {
     private String name;
     private String manufacturerName;
     private Double basePrice;
+    private int amount;
 }
 

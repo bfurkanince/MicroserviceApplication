@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface StockServiceClient {
 
     @GetMapping("api/stock/getStock/{ean}")
-    ResponseEntity<Optional<StockDto>> getStockByEan(@PathVariable String ean);
+    ResponseEntity<StockDto> getStockByEan(@PathVariable String ean);
 
 }

@@ -1,9 +1,7 @@
 package com.microservice.controller;
 
 import com.microservice.dto.StockDto;
-import com.microservice.model.StockModel;
-import com.microservice.repository.StockRepository;
-import com.microservice.util.CommonServiceUtil;
+import com.microservice.service.StockService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -11,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
+
+import static com.microservice.constant.StockServiceConstant.NOT_FOUND_STOCK_FOR_EAN_MESSAGE;
 
 @RestController
 @RequestMapping("api/stock")
@@ -19,36 +19,32 @@ import java.util.Optional;
 @Slf4j
 public class StockServiceController {
 
-    private final StockRepository stockRepository;
-    private final CommonServiceUtil commonServiceUtil;
+    private final StockService stockService;
 
     @GetMapping("/create")
     public ResponseEntity createStock(@RequestBody StockDto stockDto) {
-        StockModel stockModel = (StockModel)commonServiceUtil.convertToEntity(stockDto);
-        stockRepository.save(stockModel);
-        return new ResponseEntity<>(stockModel, HttpStatus.OK);
+        stockService.saveStock(stockDto);
+        return new ResponseEntity<>(stockDto, HttpStatus.OK);
     }
 
     @GetMapping("/getAll")
     public ResponseEntity<List<StockDto>> getAllStock() {
-        List<StockModel> stockModelList = stockRepository.findAll();
-        List<StockDto> stockDtoList = (List<StockDto>) commonServiceUtil.convertToDto(stockModelList);
+        List<StockDto> stockDtoList = stockService.getAllStocks();
         return new ResponseEntity<>(stockDtoList, HttpStatus.OK);
     }
 
     @GetMapping("/getStock/{ean}")
-    public ResponseEntity<Optional<StockDto>> getStockByEan(@PathVariable String ean) {
-        Optional<StockModel> stock = stockRepository.findByEan(ean);
-        if (stock.isPresent()) {
-            StockDto stockDto = (StockDto)commonServiceUtil.convertToDto(stock.get());
+    public ResponseEntity<StockDto> getStockByEan(@PathVariable String ean) {
+        StockDto stockDto = stockService.getStockByEan(ean);
+        if (Objects.nonNull(stockDto)){
             return new ResponseEntity(stockDto, HttpStatus.OK);
         }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return new ResponseEntity(NOT_FOUND_STOCK_FOR_EAN_MESSAGE , HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/delete/{ean}")
     public ResponseEntity<HttpStatus> deleteStock(@PathVariable String ean) {
-        stockRepository.deleteByEan(ean);
+        stockService.removeStockByEan(ean);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
