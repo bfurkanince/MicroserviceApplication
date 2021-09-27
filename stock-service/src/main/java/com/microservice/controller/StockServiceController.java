@@ -5,8 +5,7 @@ import com.microservice.model.StockModel;
 import com.microservice.repository.StockRepository;
 import com.microservice.util.CommonServiceUtil;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +16,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/stock")
 @AllArgsConstructor
+@Slf4j
 public class StockServiceController {
-
-    private static final Logger LOG = LoggerFactory.getLogger(StockServiceController.class);
 
     private final StockRepository stockRepository;
     private final CommonServiceUtil commonServiceUtil;
@@ -39,7 +37,7 @@ public class StockServiceController {
     }
 
     @GetMapping("/getStock/{ean}")
-    public ResponseEntity<Optional<StockDto>> getStockById(@PathVariable String ean) {
+    public ResponseEntity<Optional<StockDto>> getStockByEan(@PathVariable String ean) {
         Optional<StockModel> stock = stockRepository.findByEan(ean);
         if (stock.isPresent()) {
             StockDto stockDto = (StockDto)commonServiceUtil.convertToDto(stock.get());

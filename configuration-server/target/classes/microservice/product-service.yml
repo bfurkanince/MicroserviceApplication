@@ -12,6 +12,10 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto:create
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
 
 eureka:
   instance:
