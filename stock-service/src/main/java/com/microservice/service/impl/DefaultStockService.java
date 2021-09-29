@@ -1,6 +1,5 @@
 package com.microservice.service.impl;
 
-import com.microservice.dto.ProductDto;
 import com.microservice.dto.StockDto;
 import com.microservice.model.StockModel;
 import com.microservice.repository.StockRepository;
