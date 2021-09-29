@@ -10,6 +10,7 @@ import com.microservice.util.CommonServiceUtil;
 import feign.FeignException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ public class DefaultProductService implements ProductService {
     private final ProductRepository productRepository;
     private final CommonServiceUtil commonServiceUtil;
     private final StockServiceClient stockServiceClient;
+    private final StreamBridge streamBridge;
 
     @Override
     public void saveProduct(ProductDto productDto) {
@@ -48,7 +50,7 @@ public class DefaultProductService implements ProductService {
                 ResponseEntity<StockDto> stockDto = stockServiceClient.getStockByEan(productDto.getEan());
                 if(Objects.nonNull(stockDto.getBody())){
                     if(stockDto.getBody().getAmount() == 0){
-                        //RabbitMQ ile kuyruga mesaj iletilecek yada mail yollacak!
+                        streamBridge.send("notificationEventSupplier-out-0" , productDto.getEan());
                     }
                     productDto.setAmount(stockDto.getBody().getAmount());
                 }

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: notification-service
+  cloud:
+    stream:
+      bindings:
+        notificationEventSupplier-in-0:
+          destination: notification-events
+    config:
+      uri: http://localhost:8888
+      profile: native
+
+server:
+  port: 3111
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}-${server.port}:${random.uuid}
+
+#8888 portu configuration server'in ayaga kalktigi port!
