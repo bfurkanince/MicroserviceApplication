@@ -1,17 +1,17 @@
-MicroserviceApp Informations
+### MicroserviceApp Informations
 
-The following servers should be running
-*Mysql
-  mysql.server start
-*RabbitMq
-  /opt/homebrew/opt/rabbitmq/sbin/rabbitmq-server
-  How to install RabbitMq:
-    brew update
-    brew install rabbitmq 
-*MongoDb
-  brew services start mongodb-community
-  How to install MongoDb:
-    brew tap mongodb/brew
-    brew install mongodb-community
+# The following servers should be running before starting the application
 
-Eureka server : http://localhost:8761/
+**Mysql** <br/>
+**RabbitMq** <br/>
+**MongoDb** <br/>
+
+# Port informations
+
+**Configuration Server: http://localhost:8888** <br/>
+**Product Server: http://localhost:1111** <br/>
+**Stock Server: http://localhost:2111** <br/>
+**Notification Server: http://localhost:3111** <br/>
+**Eureka Server : http://localhost:8761** <br/>
+**RabbitMq Server: http://localhost:15672** <br/>
+
